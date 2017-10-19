@@ -1,0 +1,37 @@
+<div class= "container">
+    <br><br><br>
+    <div class="userTable pull-left">
+        <table class="table table-hover">
+            
+            <thead>
+            
+                <tr>
+                    <th>#</th>
+                    <th>Kullanıcı İsmi</th>
+                    <th>email</th>
+                    <th>Sil</th
+                </tr>
+            
+            </thead>
+            <tbody>
+                    <% for(var i=0; i<users.length; i++){%>
+                        
+                        <%if(i%2==0){%>
+                            
+                            <tr class="info">
+                        <%}
+                        else{%>
+                            <tr class="warning" >
+                        <%}%>
+
+                            <th><%= i+1%></th>
+                            <th><%=users[i].userName%></th>
+                            <th><%=users[i].mail%></th>
+                            <th><a href="/login/userRemove/<%=users[i].userName%>">Sil</a></th>
+                        </tr>
+                    <%}%>
+            </tbody>    
+        </table>
+    
+    </div>
+</div>
