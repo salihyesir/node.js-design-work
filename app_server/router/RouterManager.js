@@ -1,16 +1,12 @@
 //Route için yol
-var routeProcessing= require('./Processing');
-//Login Route için
-var routeLogin= require('./LoginRoute');
 
-//Home Route için
-var routeHome= require('./HomeRoute');
+
+var loginRoute= require('./LoginRoute');
+var chatRoute= require('./chatRoute');
+
 
 
 module.exports = function(app){
-    app.use('/',routeHome);
-    
-    app.use('/login',routeLogin);
-    
-    app.use('/next',routeProcessing);
+    app.use('/login',loginRoute);
+    app.use('/chat',chatRoute);
 }
