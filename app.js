@@ -1,7 +1,10 @@
-var http=require("http");
+var http    = require("http");              // http server core module
+var express = require("express");           // web framework external module
+var io      = require("socket.io");         // web socket external module
+var easyrtc = require("easyrtc");           // EasyRTC external module
+
 var path=require('path');
 
-var express = require('express');
 var app = express();
 
 var ejsLayouts = require('express-ejs-layouts');
