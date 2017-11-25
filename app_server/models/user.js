@@ -1,10 +1,10 @@
 var mongoose = require ('mongoose');
 //mongoose: MongoDB ile etkileşimi basitleştirmek için nesne veri modellemesi
-var Schema = mongoose.Schema;
+var UserSchema = mongoose.Schema;
 
 var bcrypt = require('bcrypt');
 
-var userSchema = new Schema({
+var UserSchema = new mongoose.Schema({
     userName:{ type: String, required:true, unique:true, trim: true},
     email: { type: String, unique: true, required: true, trim: true},
     password: {
@@ -21,7 +21,7 @@ var userSchema = new Schema({
 });
 
 //authenticate input against database
-userSchema.statics.authenticate = function (email, password, callback) {
+UserSchema.statics.authenticate = function (email, password, callback) {
     User.findOne({ email: email })
       .exec(function (err, user) {
         if (err) {
@@ -42,7 +42,7 @@ userSchema.statics.authenticate = function (email, password, callback) {
   }
 
 //hashing a password before saving it to the database
-userSchema.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
     var user = this;
     bcrypt.hash(user.password, 10, function (err, hash){
     if (err) {
@@ -54,7 +54,7 @@ userSchema.pre('save', function (next) {
 });
 
 
-var User=mongoose.model('User',userSchema);
+var User=mongoose.model('User',UserSchema);
 
 
 module.exports =User;

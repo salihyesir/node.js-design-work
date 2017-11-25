@@ -6,8 +6,23 @@ var io      = require("socket.io");         // web socket external module
 var path=require('path');
 var bodyParser = require('body-parser');    //form verilerinin ayrıştırılıması için
 var mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
+// parse application/json
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(function(request,response,next){
+    //console.log(request.body)
+    console.log(request.session)
+    console.log('Gelen İstek', request.url);
+    console.log('İstek Tarihi,', Date.now());
+    next();
+});
+
+
 
 // db ile mongoDB ye bağlanıyoruz.
 mongoose.connect('mongodb://localhost/testForWebRTC');
@@ -18,6 +33,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   // we're connected!
 });
+
 app.use(session({
     secret: 'work hard',
     resave: true,
@@ -27,12 +43,10 @@ app.use(session({
     })
   }));
 
-//routemanager
-require('./app_server/router/RouterManager')(app);
-//models
-var user= require('./app_server/models/user');
-//express konfigrasyon
+  //express konfigrasyon
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+
 
 
 // easyrtc sunucusunu başlattık.
@@ -57,10 +71,7 @@ app.set('views',path.join(__dirname,'./app_server/views'));
 
 // Bize gelen istekleri parse etmek için body-parse tercih ettik. 
 
-// parse application/json
-app.use(bodyParser.json());
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+
 
 
 
@@ -86,3 +97,7 @@ app.get('/konferans', function (req, res) {
     }
 });
 
+//routemanager
+require('./app_server/router/RouterManager')(app);
+//models
+var user= require('./app_server/models/user');

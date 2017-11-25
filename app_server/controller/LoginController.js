@@ -8,6 +8,7 @@ module.exports.login =function(req,res){
 module.exports.loginPost = function(req, res, next){
 
     console.log(req.body);
+    console.log("------------->login post içerisindeyiz!");
     //console.log(req.body.username);
 
     // confirm that user typed same password twice
@@ -19,33 +20,39 @@ module.exports.loginPost = function(req, res, next){
   }
 
   if (req.body.email &&
-    req.body.username &&
+    req.body.userName &&
     req.body.password &&
     req.body.passwordConf) {
 
     var userData = {
       email: req.body.email,
-      username: req.body.username,
+      userName: req.body.userName,
       password: req.body.password,
       passwordConf: req.body.passwordConf,
     }
 
-    User.create(userData, function (error, user) {
+    user.create(userData, function (error, user) {
       if (error) {
         return next(error);
       } else {
+        console.log(req.session);
+        
+        console.log("session ataması");
         req.session.userId = user._id;
         return res.redirect('/profile');
       }
     });
 
   } else if (req.body.logemail && req.body.logpassword) {
-    User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+    user.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
       if (error || !user) {
         var err = new Error('Wrong email or password.');
         err.status = 401;
         return next(err);
       } else {
+        
+        console.log(req.session);
+        console.log("session ataması");
         req.session.userId = user._id;
         return res.redirect('/profile');
       }
@@ -68,7 +75,7 @@ module.exports.loginPost = function(req, res, next){
 }
 // GET route after registering
 module.exports.getProfile=function (req, res, next) {
-    User.findById(req.session.userId)
+    user.findById(req.session.userId)
       .exec(function (error, user) {
         if (error) {
           return next(error);
@@ -78,7 +85,7 @@ module.exports.getProfile=function (req, res, next) {
             err.status = 400;
             return next(err);
           } else {
-            return res.send('<h1>Name: </h1>' + user.username + '<h2>Mail: </h2>' + user.email + '<br><a type="button" href="/logout">Logout</a>')
+            return res.send('<h1>Name: </h1>' + user.userName + '<h2>Mail: </h2>' + user.email + '<br><a type="button" href="/logout">Logout</a>')
           }
         }
       });
