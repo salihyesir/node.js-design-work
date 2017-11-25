@@ -1,13 +1,37 @@
+var express = require("express");           //express web framework
+var app = express();
 var http    = require("http");              // http server core module
-var easyrtc = require("easyrtc");           // easyRTC:  full-stack webrtc'nin üzerine kurulu bir çerçevedir. bize biraz daha kolaylık sağlıycak.
+var easyrtc = require("easyrtc");           // easyRTC:  full-stack webrtc'nin üzerine kurulu bir framework. bize biraz daha kolaylık sağlıycak.
 var io      = require("socket.io");         // web socket external module
 var path=require('path');
+var bodyParser = require('body-parser');    //form verilerinin ayrıştırılıması için
+var mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
+// db ile mongoDB ye bağlanıyoruz.
+mongoose.connect('mongodb://localhost/testForWebRTC');
+var db =require('./app_server/models/db');
+var db = mongoose.connection;
+//handle mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  // we're connected!
+});
+app.use(session({
+    secret: 'work hard',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: db
+    })
+  }));
 
-//web framework olan express' i yüklüyoruz ve konfigrasyonunu yapıyoruz.
-var express = require("express");    
-var app = express();
-//public klasörümü uygulamaya static olarak bildiriyoruz.
+//routemanager
+require('./app_server/router/RouterManager')(app);
+//models
+var user= require('./app_server/models/user');
+//express konfigrasyon
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
@@ -26,24 +50,21 @@ app.set('view engine','ejs');
 app.use(ejsLayouts);
 
 
-//form verilerinin ayrıştırılıması için
-var bodyParser = require('body-parser');
-
-var db =require('./app_server/models/db');
-
 //uygulamamıza views set ettik
 app.set('views',path.join(__dirname,'./app_server/views'));
 
 
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+// Bize gelen istekleri parse etmek için body-parse tercih ettik. 
+
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
-require('./app_server/router/RouterManager')(app);
-var user= require('./app_server/models/user');
+
+
 
 
 //Statically serve files in these directories  -easyRTC
@@ -64,3 +85,4 @@ app.get('/konferans', function (req, res) {
         res.sendfile(__dirname + '/public/login.html');
     }
 });
+

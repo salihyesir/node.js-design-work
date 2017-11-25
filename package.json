@@ -1,19 +1,26 @@
 {
   "name": "my_package",
   "version": "1.0.1",
+  "repository": {
+    "url": "https://github.com/salihyesir/node.js-design-work"
+  },
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "watch":"nodemon app.js && mongod"
   },
   "author": {
     "name": "Salih YESİR",
     "email": "salih.yesir@ogr.sakarya.edu.tr"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.0",
     "easyrtc": "^1.1.0",
     "ejs": "^2.5.7",
     "express": "^4.16.1",
     "express-ejs-layouts": "^2.3.1",
+    "express-session": "^1.15.6",
     "mongoose": "^4.12.2",
     "socket.io": "^2.0.4"
   }

@@ -7,6 +7,6 @@ var chatRoute= require('./chatRoute');
 
 
 module.exports = function(app){
-    app.use('/login',loginRoute);
+    app.use('/',loginRoute);
     app.use('/chat',chatRoute);
 }
