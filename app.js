@@ -100,63 +100,46 @@ app.get('/direk', function (req, res) {
     }
 });
 
-
-app.get('/omegle', function (req, res) {
-  console.log('Login attempt');
-  //true yazan kısma ileriki zamanlar oturum şartı geldiğinde düzenlicez.
-  if (true) {
-      
-    res.sendfile(__dirname + "/app_server/views/omegle.html");
-  }
-  else {
-      easyrtc.setOption('apiEnable', 'false');
-      res.sendfile(__dirname + '/public/login.html');
-  }
-});
-
-
-
-//routemanager
-require('./app_server/router/RouterManager')(app);
-//models
-var user= require('./app_server/models/user');
-
 // Rastgele chat ortamı icin görüşme
 
 var userList = {};
 var waitingList = {};
 var socketCount=0;
 
+//connection komutu diğer fonksiyonlarımızı kapsar.Bağlantılar, client iletişimi vs vs herşey bu fonksiyon altında tanımlanır.
+io.sockets.on("connection", function(socket) {  
+  socketCount++;
 
-io.sockets.on("connection", function(socket) {
-    socketCount++;
-  
-    socket.on("init_user", function(userData){
-      // update the list of users
+    //bu kısımda kullanıcının girişi ile olan olaylar ele alındı.app.js(server olmayan)'de
+  socket.on("init_user", function(userData){
+      // kullanıcı listesi güncelle
       userList[socket.id] = {"id": socket.id, "name": userData.name};
-      
-      // send the connected user list to the new user
+      console.log(userList[socket.id]);
+      // bağlı kullanıcı listesini yeni kullanıcıya gönderin
       socket.emit("ui_user_set", userList);
-      // send the new user to the all other users
+      console.log(userList);
+      // yeni kullanıcıyı diğer tüm kullanıcılara gönderin.
       socket.broadcast.emit("ui_user_add", userList[socket.id]);
-    });
-    
+  });
+
+    //next user olayı ele alındı.
     socket.on("next_user", function() {
       if(waitingList[socket.id]) return;
   
       if (Object.keys(waitingList).length == 0) {
         waitingList[socket.id] = true;
       } else {
-        // pick a partner from the waiting list
+        // bekleme listesinden bir ortak seç
         socket.partnerId = Object.keys(waitingList)[0];
   
-        // connect two user with each other
+        // iki kullanıcı birbirine bağlamak
         socket.emit("connect_partner", {'caller':false, 'partnerId': socket.partnerId});
+        //2.0.x ve 1.0.x' de bu kısımda hata vermekte sebebi io.sockets.socket tanımlanmamış socket.id' kaldırılmış olması
         partnerSocket = io.sockets.socket(socket.partnerId);
         partnerSocket.partnerId = socket.id;
         partnerSocket.emit("connect_partner", {'caller':true, 'partnerId': socket.id});
         
-        // delete the partner from the waiting list
+        // eşi bekleme listesinden sil
         delete waitingList[socket.partnerId];
       }
     });
@@ -184,6 +167,15 @@ io.sockets.on("connection", function(socket) {
       socket.partnerId = null;
     }
   });
+
+
+
+//routemanager
+require('./app_server/router/RouterManager')(app);
+//models
+var user= require('./app_server/models/user');
+
+
   
 
 /*
