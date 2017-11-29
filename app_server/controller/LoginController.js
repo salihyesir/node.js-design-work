@@ -2,7 +2,7 @@ var user = require('../models/user');
 
 module.exports.login =function(req,res){
     res.render('login'); // render login.ejs bulunur. path yazmaya gerek yok next yazmayada gerek yok
-    
+
 }
 
 module.exports.loginPost = function(req, res, next){
