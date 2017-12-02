@@ -18,7 +18,7 @@ module.exports.loginPost = function(req, res, next){
     res.send("passwords dont match");
     return next(err);
   }
-
+  // eğerki tüm alanlar yollanırsa bir kayıt olma işlemi olur
   if (req.body.email &&
     req.body.userName &&
     req.body.password &&
@@ -44,6 +44,7 @@ module.exports.loginPost = function(req, res, next){
     });
 
   } else if (req.body.logemail && req.body.logpassword) {
+    console.log('Bu bir authenticate işlemi');
     user.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
       if (error || !user) {
         var err = new Error('Wrong email or password.');
@@ -51,8 +52,7 @@ module.exports.loginPost = function(req, res, next){
         return next(err);
       } else {
         
-        console.log(req.session);
-        console.log("session ataması");
+        console.log("user.id =>"+user._id);
         req.session.userId = user._id;
         return res.redirect('/profile');
       }
@@ -76,7 +76,7 @@ module.exports.loginPost = function(req, res, next){
 // GET route after registering
 module.exports.getProfile=function (req, res, next) {
     user.findById(req.session.userId)
-      .exec(function (error, user) {
+    .exec(function (error, user) {
         if (error) {
           return next(error);
         } else {
@@ -85,6 +85,7 @@ module.exports.getProfile=function (req, res, next) {
             err.status = 400;
             return next(err);
           } else {
+            console.log
             return res.send('<h1>Name: </h1>' + user.userName + '<h2>Mail: </h2>' + user.email + '<br><a type="button" href="/logout">Logout</a>')
           }
         }

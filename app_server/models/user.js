@@ -11,6 +11,7 @@ var UserSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    //şifrelenmemiş hali en son uygulamadan kaldırılacaktır
     passwordConf: {
       type: String,
       required: true,

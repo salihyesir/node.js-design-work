@@ -10,3 +10,5 @@ module.exports = function(app){
     app.use('/',loginRoute);
     app.use('/chat',chatRoute);
 }
+
+

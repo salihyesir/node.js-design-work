@@ -6,21 +6,21 @@
         username: 'User_'+Math.random().toString(36).substring(4,8)
       };
       
-      // store the DOM elements to use later
+      // daha sonra kullanmak üzere DOM öğelerini sakla
       var elMessages = $('#messages_container');
       var elUsers = $('#user_container');
       var elText = $('#message');
       var btnSend = $('#send_btn');
     
-      // bind the event listeners
+      // olay dinleyicilerini bağla
       btnSend.on('click', function() {
         var text = elText.val().trim();
         if(text){
           elText.val('');
-          // as webRTC allows to send P2P message, send it to the partner
-          // without interacting with the server
+          // webRTC, P2P mesajı göndermesine izin verdiği gibi, iş ortağına gönderir
+          // sunucu ile etkileşim kurmadan
           easyrtc.sendPeerMessage(self.partnerId, 'send_peer_msg', text);
-          // add message to the user
+          // kullanıcıya ileti ekleyin
           addMessage(text, self.id);
         }
       });
@@ -38,7 +38,7 @@
       });
     
     
-      // handle the key events
+      // önemli olayları işlemek
       elText.on('keypress', function(e) {
         if (e.keyCode == 13 && !e.shiftKey && !btnSend.hasClass('disabled')) {
           btnSend.trigger('click');
@@ -46,7 +46,7 @@
         }
       });
     
-      // will be trigerred on sendPeerMessage() call
+      // gönderici üzerinde tetiklenecek Mesaj () çağrısı
       easyrtc.setPeerListener( function(senderId, msgType, msgData, targeting) {
         if( msgType === 'send_peer_msg' ) {
           addMessage(msgData, senderId);
@@ -55,13 +55,13 @@
         }
       });
     
-      // get the partner video stream - triggered on sucessful call
+      // iş ortağı video akışını elde edin - başarılı bir şekilde çağrıldığında tetiklenir
       easyrtc.setStreamAcceptor( function(callerId, stream) {
         var video = document.getElementById('partnerVideo');
         easyrtc.setVideoObjectSrc(video,stream);
       });
       
-      // stop to receive the partner video stream - triggered on hangup call
+      // Hangout çağrısında tetiklenen ortak video akışını almak için durun
       easyrtc.setOnStreamClosed( function (callerId) {
         var video = document.getElementById('partnerVideo');
         easyrtc.setVideoObjectSrc(video, '');
@@ -72,9 +72,9 @@
     
         easyrtc.setUsername(self.username);
         easyrtc.initMediaSource(
-          // success callback
+          // başarı geribildirimi
           function() {
-            // set the user own video
+            // kullanıcıya kendi video ayarla
             var selfVideo = document.getElementById('selfVideo');
             easyrtc.setVideoObjectSrc(selfVideo, easyrtc.getLocalStream());
           },
@@ -89,7 +89,7 @@
           function(socketId) {
             self.id = socketId;
     
-            // event listeners to update list of active users
+            // event listener aktif kullanıcı listesini güncellemesi
             easyrtc.webSocket.on('ui_user_add', function(userData) {
               elUsers.append('<div id='+userData.id+'>'+userData.name+'</div>');
             });
@@ -111,13 +111,13 @@
               }
             });
             easyrtc.webSocket.on('disconnect_partner', function(partnerId){
-              // checks whether still connected to the same user
+              // yine aynı kullanıcıya bağlı olup olmadığını kontrol eder
               if(partnerId == self.partnerId){
                 disconnectMeFromPartner();
               }
             });
     
-            // make the necessary updates on the server side for the new user
+            // yeni kullanıcı için sunucu tarafında gerekli güncellemeleri yapın
             easyrtc.webSocket.emit('init_user', {'name':self.username});
           },
           // failure callback
@@ -128,7 +128,7 @@
       }
     
       function addMessage(text, senderId) {
-        // Escape html special characters, then add linefeeds.
+        // Html özel karakterlerinden kaçının, ardından satır beslemeleri ekleyin.
         var content = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br />');
         if(!senderId) {
           // no sender, informative message only
@@ -141,17 +141,17 @@
       function performCall(id) {
         connectMeToPartner(id);
         
-        // fill these functions if necessary
+        // gerekirse bu işlevleri doldurun
         var successCB = function() {};
         var failureCB = function() {
-          // reset partner on failure
+          // başarısızlık durumunda iş ortağını sıfırlayın
           disconnectMeFromPartner();
         };
         var acceptedCB = function(isAccepted, callerId) {};
         easyrtc.call(self.partnerId, successCB, failureCB, acceptedCB);
       }
     
-      // auto-accept the call
+      // çağrıyı otomatik kabul et
       easyrtc.setAcceptChecker(function(callerId, callback) {
         //callback(callerId == self.partnerId);
         callback(true);
@@ -159,7 +159,7 @@
       
       function hangupCall() {
         if(self.partnerId) {
-          // inform both users that they disconnected
+          // her iki kullanıcıyı da bağlantısını kestiler
           easyrtc.sendPeerMessage(self.partnerId, 'send_peer_disconnect', 'Disconnected');
           disconnectMeFromPartner();
         }
