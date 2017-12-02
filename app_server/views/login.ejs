@@ -9,6 +9,7 @@
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:600'>
 
     <link rel="stylesheet" href="/public/resources/css/LoginStyle.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -72,8 +73,40 @@
 </div>
 
 
-<div style="border:1px solid; background:rgba(40,57,101,.9); height:200px; margin-left:525px; min-height:670px; text-align:center; padding:20%"><a href="/chat/omegle">RANDOM CHAT</a></div>
+<div class="RandomChat">
+		<button class="button" style="vertical-align:middle;"><span>Random Chat! </span></button>
+</div>
 
-
+<script>
+	var n = 0;
+	setInterval(function(){ 
+		myFunction(n);
+		$('.RandomChat').css('transition', 'background-image 1.5s ease');
+		n++;
+		if(n>3)
+		{
+			n = 0;
+		}
+	}, 3000);
+	
+	function myFunction(n) {
+		if(n == 0)
+		{
+			$('.RandomChat').css('background-image', 'url("public/resources/img/maxresdefault.jpg")');
+		}
+		if(n == 1)
+		{
+			$('.RandomChat').css('background-image', 'url("public/resources/img/chat1.png")');
+		}
+		if(n == 2)
+		{
+			$('.RandomChat').css('background-image', 'url("public/resources/img/asdf.png")');
+		}
+		if(n == 3)
+		{
+			$('.RandomChat').css('background-image', 'url("public/resources/img/qwert.png")');
+		}
+	}
+</script>
 </body>
 </html>
