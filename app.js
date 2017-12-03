@@ -144,22 +144,23 @@ io.sockets.on("connection", function(socket) {
       }
     });
   });
-  
-  // Since "disconnect" event is consumed by easyRTC,
-  // socket.on("disconnect",function(){}) will not work
-  // use easyrtc event listener for disconnect
+
+  // Bu olay da kullanıcın çıkması
+  // EasyRTC tarafından "disconnect" olayı tüketildiğinden,
+  // socket.on ("disconnect", function () {}) çalışmaz
+  // bağlantı kesmek için easyrtc olay listener kullandık
   easyrtc.events.on("disconnect", function(connectionObj, next){
-    // call the default disconnect method 
+    // varsayılan bağlantı kesme yöntemini çağır
     easyrtc.events.emitDefault("disconnect", connectionObj, next);
   
     var socket = connectionObj.socket;
     var id = socket.id; 
-    // clear the server side variables
+    // sunucu tarafındaki değişkenleri temizle
     socketCount--;
     delete userList[id];
     delete waitingList[id];
     
-    // adjust the client side
+    // istemci tarafını ayarla
     io.sockets.emit("ui_user_remove", id);
     if (socket.partnerId){
       partnerSocket = io.sockets.socket(socket.partnerId);
@@ -167,7 +168,6 @@ io.sockets.on("connection", function(socket) {
       socket.partnerId = null;
     }
   });
-
 
 
 //routemanager
