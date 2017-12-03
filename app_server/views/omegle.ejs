@@ -8,11 +8,13 @@
     <title>Enlargify</title>
 
     <!-- Bootstrap -->
-    <link href="/public/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
     <link href="/public/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     
     <link href="/public/resources/css/app.css" rel="stylesheet">
-    
+    <link href="/public/resources/css/ChatStyle.css" rel="stylesheet">
+	
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -22,47 +24,63 @@
   </head>
   <body>
   
-    <div class="container-fluid height-fill">
-      <div class="row height-fill pos-middle">
-        <div id="video_container" class="col-xs-2">
-          <video poster="/public/resources/img/cam.png" id="selfVideo"> </video>
-          <video poster="/public/resources/img/cam.png" id="partnerVideo"> </video> 
-        </div>
-        
-        <div id="messages_container" class="col-xs-6 well height-fill">
-        </div>
-        
-        <div id="user_container" class="col-xs-2 well height-fill">
-        </div>
-        
-        <div id="button_container" class="col-xs-2">
-          <a class="btn btn-block btn-success"  id="next_btn" title="Get a Random Stranger">
-            <i class="fa fa-forward fa-3x"></i>
-            <span class="shortcut">Next</span>
-          </a>
-          <a class="btn btn-block btn-danger"  id="stop_btn" title="Stop The Chat">
-            <i class="fa fa-stop fa-3x"></i>
-            <span class="shortcut">Stop</span>
-          </a>
-          <a class="btn btn-block btn-warning"  id="clear_btn" title="Clear Chatbox">
-            <i class="fa fa-eraser fa-3x"></i>
-            <span class="shortcut">Clear</span>
-          </a>
-        </div>
-      </div>
   
-      <div class="row pos-bottom">
-        <div class="col-xs-7 col-xs-offset-2">
-          <textarea id="message" rows="3" name="message"> </textarea>
-        </div>
-        <div class="col-xs-1">
-          <a class="btn btn-block btn-success btn-large disabled" id="send_btn">
-            <i class="fa fa-envelope fa-2x"></i>
-            <span class="shortcut">(Enter)</span>
-          </a>
-        </div>
-      </div>
-    </div>
+  
+	<div class="container">
+	<div class="row" style="margin-bottom:10px;">
+	
+      
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<div>
+				  <div id="video_container">
+				  <video poster="/public/resources/img/cam.png" id="selfVideo"> </video>
+				  <video poster="/public/resources/img/cam.png" id="partnerVideo"> </video> 
+				  </div>
+				</div><br/>
+				 <div id="button_container">
+						<div class="col-md-4">
+							 
+							<a class="btn btn-block btn-success" style="color: #fff;"  id="next_btn" title="Get a Random Stranger">
+							 <i class="fa fa-forward fa-3x"></i>
+							 <span class="shortcut">Next</span>
+							</a>
+						</div>
+						<div class="col-md-4">
+							<a class="btn btn-block btn-danger" style="color: #fff;"  id="stop_btn" title="Stop The Chat">
+							 <i class="fa fa-stop fa-3x"></i>
+							 <span class="shortcut">Stop</span>
+							</a>
+						</div>
+						<div class="col-md-4">
+							<a class="btn btn-block btn-warning" style="color: #fff;"  id="clear_btn" title="Clear Chatbox">
+							 <i class="fa fa-eraser fa-3x"></i>
+							 <span class="shortcut">Clear</span>
+							</a>
+						</div>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div id="messages_container" class="myBox" style="padding:15px; border: 1px solid #4d94ff; background-color: #FFF; height:400px; margin-bottom:5px;">
+
+		     		</div>
+				<div>
+					<textarea id="message" rows="3" name="message" style="float: left; width:86%; margin-right: 5px;"></textarea>
+					<button id="send_btn" class="button button1">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+  
+  
+  
+  
+  
+  
+   
+   
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/public/libs/jquery/jquery-3.2.1.min.js"></script>

@@ -134,7 +134,21 @@
           // no sender, informative message only
           elMessages.append('<div><b>' + content + '</b></div>');
         } else {
-          elMessages.append('<div>' + (senderId == self.id ? '<b>Me: </b>' : '<b>Stranger: </b>') + content + '</div>');
+
+
+            elMessages.append('<div>' + (senderId == self.id ? '<div class="alert alert-dismissible fade show" role="alert" style="font-size:14px;">'+
+                    '<strong>Me: </strong>' + content +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                '<span aria-hidden="true">&times;</span>'+
+            '</button>'+
+            '</div>' : '<div class="alert  alert-dismissible fade show" role="alert" style="font-size:14px;">'+
+                    '<strong>Stranger: </strong>' + content +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button></div>'));
+
+
+
         }
       }
     
