@@ -6,7 +6,7 @@
   },
   "scripts": {
     "start": "nodemon app.js",
-    "watch":"nodemon app.js && mongod"
+    "watch": "nodemon app.js && mongod"
   },
   "author": {
     "name": "Salih YESİR",
@@ -21,7 +21,11 @@
     "express": "^4.16.1",
     "express-ejs-layouts": "^2.3.1",
     "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
+    "http-proxy": "^1.16.2",
+    "https": "^1.0.0",
     "mongoose": "^4.12.2",
+    "pem": "^1.12.3",
     "socket.io": "0.9.x"
   }
 }

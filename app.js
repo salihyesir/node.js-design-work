@@ -1,9 +1,12 @@
+var https   = require("https");
+var fs      = require("fs");        // file system core module 
+var pem = require('pem');
 var express = require("express");           //express web framework
 var app = express();
-var http    = require("http");              // http server core module
+//var http    = require("http");              // http server core module
 var easyrtc = require("easyrtc");           // easyRTC:  full-stack webrtc'nin üzerine kurulu bir framework. bize biraz daha kolaylık sağlıycak.
 var sio      = require("socket.io");         // web socket external module
-var path=require('path');
+var path= require('path');
 var bodyParser = require('body-parser');    //form verilerinin ayrıştırılıması için
 var mongoose = require('mongoose');
 var session = require('express-session');
@@ -20,7 +23,7 @@ var ejsLayouts = require('express-ejs-layouts');
 app.set('view engine','ejs');
 app.use(ejsLayouts);
 
-//express konfigrasyon
+//express konfigrasyon public klasörü kullanıcılara açılsın.
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
@@ -66,12 +69,51 @@ app.use(session({
 // easyrtc sunucusunu başlattık.
 //https://easyrtc.com/docs/easyrtc_faq.php => bu adresten detaylara bakabilirsiniz.
 //express serverda socket.io başlattık
-var webServer = app.listen(8000);
-//WebRTC'nin çalışması için socket.io çalıştırılır.
-var io = sio.listen(webServer, {"log level":1});
-// EasyRTC server başlatılır.
-var easyrtcServer = easyrtc.listen(app, io, {'apiEnable':'true'});
+//var webServer = app.listen(8000);
+/*
+pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
+  var httpsOptions = {
+      key: keys.serviceKey,
+      cert: keys.certificate
+  };
 
+  var proxy = httpProxy.createProxyServer({
+    target: http,
+    ws: true,
+    secure: false,
+    changeOrigin: true
+});
+
+var proxyWebsocket = function (req, socket, head) {
+  // replace the target with your signaling server ws url
+  proxy.ws(req, socket, head, {
+      target: 'http://localhost:8000/'
+  });
+};
+
+
+var server = https.createServer(httpsOptions, app);
+    server.on('upgrade', proxyWebsocket);
+    server.listen(8443);
+
+
+    
+});
+   */
+/*
+  var webServer = https.createServer(
+    {
+        key:  fs.readFileSync(path.join(__dirname, './private/privatekey.pem')),
+        cert: fs.readFileSync(path.join(__dirname, './private/certificate.pem'))
+    },
+    app).listen(8443);
+*/
+var webServer = app.listen(8000);
+ //WebRTC'nin çalışması için socket.io çalıştırılır.
+ var io = sio.listen(webServer, {"log level":1});
+
+ // EasyRTC server başlatılır.
+ var easyrtcServer = easyrtc.listen(app, io, {'apiEnable':'true'});
 
 app.get('/konferans', function (req, res) {
     console.log('Login attempt');
