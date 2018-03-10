@@ -3,7 +3,7 @@ var router = express.Router();
 
 var ctrlChat= require('../controller/ChatController');
 
-router.get('/omegle',ctrlChat.omegle);
+router.get('/random',ctrlChat.omegle);
 
 
 
