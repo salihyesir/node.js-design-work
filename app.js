@@ -3,7 +3,7 @@ var fs      = require("fs");        // file system core module
 var pem = require('pem');
 var express = require("express");           //express web framework
 var app = express();
-//var http    = require("http");              // http server core module
+var http    = require("http");              // http server core module
 var easyrtc = require("easyrtc");           // easyRTC:  full-stack webrtc'nin üzerine kurulu bir framework. bize biraz daha kolaylık sağlıycak.
 var sio      = require("socket.io");         // web socket external module
 var path= require('path');
@@ -73,8 +73,8 @@ app.use(session({
 /*
 pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
   var httpsOptions = {
-      key: keys.serviceKey,
-      cert: keys.certificate
+      key:  fs.readFileSync(path.join(__dirname, './private/privatekey.pem')),
+      cert: fs.readFileSync(path.join(__dirname, './private/certificate.pem'))
   };
 
   var proxy = httpProxy.createProxyServer({
@@ -99,15 +99,15 @@ var server = https.createServer(httpsOptions, app);
 
     
 });
-   */
-/*
+*/   
+
   var webServer = https.createServer(
     {
         key:  fs.readFileSync(path.join(__dirname, './private/privatekey.pem')),
         cert: fs.readFileSync(path.join(__dirname, './private/certificate.pem'))
     },
     app).listen(8443);
-*/
+
 var webServer = app.listen(8000);
  //WebRTC'nin çalışması için socket.io çalıştırılır.
  var io = sio.listen(webServer, {"log level":1});

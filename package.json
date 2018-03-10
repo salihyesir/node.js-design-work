@@ -25,6 +25,7 @@
     "http-proxy": "^1.16.2",
     "https": "^1.0.0",
     "mongoose": "^4.12.2",
+    "passport": "^0.4.0",
     "pem": "^1.12.3",
     "socket.io": "0.9.x"
   }
