@@ -236,3 +236,10 @@ app.use(function (req, res, next) {
   });
   */
 
+
+
+ app.get("/profil", function(req,res) {
+ 
+	res.render('./profil.ejs');
+ 
+});

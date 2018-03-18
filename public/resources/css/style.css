@@ -1,4 +1,4 @@
-body {
+/* body {
     padding-top: 70px;
     padding-bottom: 30px;
   }
@@ -31,4 +31,11 @@ body {
   width: 600px;
   margin-left: auto;
   margin-right: auto;
+} */
+
+
+.navbar-menu a
+{
+  color: #fff;
 }
+
