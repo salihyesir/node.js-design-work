@@ -1,6 +1,6 @@
 var https   = require("https");
 var fs      = require("fs");        // file system core module 
-var pem = require('pem');
+//var pem = require('pem');
 var express = require("express");           //express web framework
 var app = express();
 var http    = require("http");              // http server core module
@@ -177,7 +177,9 @@ io.sockets.on("connection", function(socket) {
         // iki kullanıcı birbirine bağlamak
         socket.emit("connect_partner", {'caller':false, 'partnerId': socket.partnerId});
         //2.0.x ve 1.0.x' de bu kısımda hata vermekte sebebi io.sockets.socket tanımlanmamış socket.id' kaldırılmış olması
-        partnerSocket = io.sockets.socket(socket.partnerId);
+        //Çözdüm
+        partnerSocket = io.sockets.connected[socket.partnerId];
+        //partnerSocket = io.sockets.socket(socket.partnerId);
         partnerSocket.partnerId = socket.id;
         partnerSocket.emit("connect_partner", {'caller':true, 'partnerId': socket.id});
         
@@ -205,8 +207,14 @@ io.sockets.on("connection", function(socket) {
     // istemci tarafını ayarla
     io.sockets.emit("ui_user_remove", id);
     if (socket.partnerId){
-      partnerSocket = io.sockets.socket(socket.partnerId);
-      partnerSocket.emit("disconnect_partner", socket.id);
+      //partnerSocket = io.sockets.sockets[socket.partnerId];
+      //partnerSocket = io.sockets.socket(socket.partnerId);
+
+      io.to(socket.partnerId).emit("disconnect_partner", socket.id);
+      //partnerSocket.emit("disconnect_partner", socket.id);
+      
+
+
       socket.partnerId = null;
     }
   });
@@ -237,9 +245,14 @@ app.use(function (req, res, next) {
   */
 
 
-
  app.get("/profil", function(req,res) {
  
 	res.render('./profil.ejs');
+ 
+});
+
+app.get("/deneme", function(req,res) {
+ 
+	res.render('./deneme.ejs');
  
 });

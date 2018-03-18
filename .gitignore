@@ -1,0 +1,11 @@
+*.class
+References
+node_modules
+.idea
+*.log
+BeniOku
+BeniOku.txt
+*.info
+*.mp4
+*.css
+JS

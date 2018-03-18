@@ -84,7 +84,7 @@
           }
         );
         
-        easyrtc.connect('enlargify_app',
+        easyrtc.connect('random_app',
           // success callback
           function(socketId) {
             self.id = socketId;

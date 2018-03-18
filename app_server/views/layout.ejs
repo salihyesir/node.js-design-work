@@ -10,14 +10,19 @@
     <!- - <link rel="shortcut icon" href="../../assets/ico/favicon.png"> - ->
 -->
   <title>WebRTC</title>
-
-  <!--<link rel="stylesheet" href="/public/resources/css/theme.css"> -->
-  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css">
-
-  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="/public/resources/css/style.css">
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/public/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    
+  
+    <!-- Bootstrap cdn testi için gerekli -->
+    <div id="bootstrapCssTest" class="hidden"></div>
+  
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -66,11 +71,26 @@
     <script src="../../dist/js/bootstrap.min.js"></script> -->
 
 
-    <script type="text/javascript" src="/public/libs/jquery/jquery-3.2.1.min.js"></script>
+
+
+   <!-- <script type="text/javascript" src="/public/libs/jquery/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/public/libs/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/public/resources/js/fontawesome.js"></script>
+    <script type="text/javascript" src="/public/resources/js/fontawesome.js"></script>-->
 
 
+
+<!-- Üsteki css cdn çöktüyse bootstrap burada ekliyorum.Sayfa max 1 sn geçikme ile responsive olacak. 
+        bu da cdn linklerini kontrol etmem gerektiğini anlamam için. Yani css burada kasıtlı olarak ekliyorum.  -->
+    <script type="text/javascript">
+        if ($('#bootstrapCssTest').is(':visible') === true) {
+            $('<link href="/public/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />').appendTo('head');
+            window.Bootstrap || document.write('<script src="/public/libs/bootstrap/js/bootstrap.min.js"><\/script>')
+        }
+    </script>
 </body>
+
+
+
+
 
 </html>

@@ -27,6 +27,6 @@
     "mongoose": "^4.12.2",
     "passport": "^0.4.0",
     "pem": "^1.12.3",
-    "socket.io": "0.9.x"
+    "socket.io": "^2.0.4"
   }
 }
